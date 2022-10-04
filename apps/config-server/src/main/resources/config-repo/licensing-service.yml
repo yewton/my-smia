@@ -1,0 +1,58 @@
+example:
+  property: I AM THE DEFAULT
+
+# logstash.host= 3.136.161.26:5000
+
+logging:
+  config: classpath:logback-delayed.xml
+  level:
+    com.netflix: WARN
+    org.springframework.web: WARN
+    com.optimagrowth: DEBUG
+
+spring:
+  profiles.include:
+    - database
+    - kafka
+    - eureka
+  cloud:
+    # loadbalancer.ribbon.enabled: false
+    stream:
+      bindings:
+        inboundOrgChanges:
+          destination: orgChangeTopic
+          content-type: application/json
+          group: licensingGroup
+  #      kafka:
+  #        binder:
+  #          zkNodes: kafka
+  #          brokers: kafka
+  #      spring.zipkin.baseUrl:http://zipkin:9411
+  sleuth.sampler.percentage: 1
+
+    #eureka:
+    #  instance.preferIpAddress = true
+    #  eureka.client.registerWithEureka = true
+    #  eureka.client.fetchRegistry = true
+    #  eureka.client.serviceUrl.defaultZone = http://eurekaserver:8070/eureka/
+    #
+    #security:
+    #  oauth2:
+    #    resource:
+  #      userInfoUri: http://authentication-service:8082/user
+  #    client:
+  #      grant-type: client_credentials
+
+  # signing.key: "345345fsdfsf5345"
+
+redis:
+  server: redis
+  port: 6379
+
+## Enable all Spring Boot Actuator endpoints.
+#management:
+#  endpoints:
+#    web:
+#      exposure:
+#        include: "*"
+#    enabled-by-default: true

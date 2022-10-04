@@ -1,0 +1,22 @@
+version: '3'
+
+env:
+  DOCKER_SOCK: '{{.HOME}}/.docker/desktop/docker.sock'
+
+tasks:
+  compose:up:
+    desc: アプリケーションを含めた全てのサービスを起動します
+    cmds:
+      - 'docker compose --profile app --profile external up -d'
+  compose:up-externals:
+    desc: アプリケーション以外のサービスを起動します
+    cmds:
+      - 'docker compose --profile external up -d'
+  compose:destroy:
+    desc: ボリュームも含めて全てを無かったことにします
+    cmds:
+      - docker compose down -v --remove-orphans
+  do:
+    desc: 任意の docker コマンド( CMD )を実行します
+    cmds:
+      - docker {{.CMD}}

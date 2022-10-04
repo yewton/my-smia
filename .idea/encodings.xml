@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/apps/authentication-service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/apps/authentication-service/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/apps/config-server/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/apps/config-server/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/apps/configserver/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/apps/eureka-server/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/apps/eureka-server/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/apps/eurekaserver/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/apps/gateway-server/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/apps/gateway-server/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/apps/licensing-service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/apps/licensing-service/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/apps/organization-service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/apps/organization-service/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/apps/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/apps/src/main/resources" charset="UTF-8" />
+  </component>
+</project>

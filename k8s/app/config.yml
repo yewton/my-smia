@@ -1,0 +1,100 @@
+#@ load("@ytt:data", "data")
+#@ load("@ytt:template", "template")
+#@ load("app.lib.yml", "nameSuffix")
+#@ load("@ytt:base64", "base64")
+
+#@ useSecret = data.values.secret
+#@ if useSecret:
+#@ secretName = "secret-" + nameSuffix(data.values.secret)
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: #@ secretName
+  namespace: my-smia
+type: Opaque
+data:
+  bootstrap.yml: #@ base64.encode(data.values.secret)
+#@ end
+
+#@ useConfig = data.values.config and data.values.dbConfig
+#@ if useConfig:
+#@ configName = "config-" + nameSuffix(data.values.config + data.values.dbConfig)
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: #@ configName
+  namespace: my-smia
+data:
+  application.yml: #@ data.values.config
+  application-database.yml: #@ data.values.dbConfig
+#@ end
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: #@ data.values.name
+  name: #@ data.values.name
+  namespace: my-smia
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: #@ data.values.name
+  template:
+    metadata:
+      labels:
+        app: #@ data.values.name
+    spec:
+      containers:
+        - env:
+            #@ if/end data.values.profile:
+            - name: SPRING_PROFILES_ACTIVE
+              value: #@ data.values.profile
+            - name: SERVER_PORT
+              value: #@ str(data.values.port)
+          image: #@ data.values.image
+          imagePullPolicy: #@ data.values.imagePullPolicy
+          name: #@ data.values.name
+          ports:
+            - containerPort: #@ data.values.port
+          volumeMounts:
+            #@ if/end useSecret:
+            - name: secret
+              mountPath: "/config"
+              readOnly: true
+            #@ if/end useConfig:
+            - name: config
+              mountPath: "/etc/my-smia"
+              readOnly: true
+      volumes:
+        #@ if/end useSecret:
+        - name: secret
+          secret:
+            secretName: #@ secretName
+        #@ if/end useConfig:
+        - name: config
+          configMap:
+            name: #@ configName
+      restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: #@ data.values.name
+  name: #@ data.values.name
+  namespace: my-smia
+spec:
+  #@ if/end data.values.nodePort:
+  type: NodePort
+  ports:
+    - name: #@ str(data.values.port)
+      port: #@ data.values.port
+      targetPort: #@ data.values.port
+      #@ if/end data.values.nodePort:
+      nodePort: #@ data.values.nodePort
+  selector:
+    app: #@ data.values.name

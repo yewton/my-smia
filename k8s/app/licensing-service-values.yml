@@ -1,0 +1,3 @@
+name: licensing-service
+port: 8080
+profile: dev

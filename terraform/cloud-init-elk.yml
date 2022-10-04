@@ -1,0 +1,21 @@
+#cloud-config
+repo_update: true
+repo_upgrade: all
+
+locale: en_US.utf8
+timezone: Asia/Tokyo
+
+packages:
+  - nmap-ncat # Redis の動作確認用
+  - docker
+
+runcmd:
+  - hostnamectl set-hostname my-smia-elkz
+  - systemctl start docker
+  - systemctl enable docker
+  - >-
+    curl -L https://github.com/docker/compose/releases/download/1.21.0/docker-compose-`uname -s`-`uname -m`
+    | tee /usr/local/bin/docker-compose > /dev/null
+  - chmod +x /usr/local/bin/docker-compose
+  - ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+  - usermod -a -G docker ec2-user

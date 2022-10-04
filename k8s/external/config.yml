@@ -1,0 +1,13 @@
+#@ load("@ytt:data", "data")
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: #@ data.values.name
+  name: #@ data.values.name
+  namespace: my-smia
+spec:
+  externalName: #@ data.values.externalName
+  selector:
+    app: #@ data.values.name
+  type: ExternalName

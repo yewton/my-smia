@@ -1,0 +1,11 @@
+version: '3'
+
+env:
+  DOCKER_HOST:
+    sh: docker context inspect | jq -r '.[0].Endpoints.docker.Host'
+
+tasks:
+  build-images:
+    desc: 全てのアプリケーションイメージをビルドします
+    cmds:
+      - mvn clean package dockerfile:build

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <artifactId>ostock-parent-pom</artifactId>
+
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>dockerfile-maven-plugin</artifactId>
+        <configuration>
+          <skip>true</skip>
+        </configuration>
+        <groupId>com.spotify</groupId>
+        <version>1.4.13</version>
+      </plugin>
+    </plugins>
+  </build>
+  <description>Parent Pom for the optimagrowth project</description>
+  <groupId>com.optimagrowth</groupId>
+  <modelVersion>4.0.0</modelVersion>
+
+
+  <modules>
+    <module>config-server</module>
+    <module>eureka-server</module>
+    <module>gateway-server</module>
+    <module>authentication-service</module>
+    <module>licensing-service</module>
+    <module>organization-service</module>
+  </modules>
+  <name>optimagrowth-parent-pom</name>
+
+  <packaging>pom</packaging>
+
+  <parent>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <groupId>org.springframework.boot</groupId>
+    <relativePath/>
+    <version>2.2.3.RELEASE</version> <!-- lookup parent from repository -->
+  </parent>
+
+  <properties>
+    <docker.image.prefix>ostock</docker.image.prefix>
+  </properties>
+  <version>0.0.1-SNAPSHOT</version>
+</project>

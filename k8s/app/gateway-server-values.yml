@@ -1,0 +1,4 @@
+name: gateway-server
+port: 8072
+profile: dev
+nodePort: 31200

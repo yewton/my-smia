@@ -1,0 +1,11 @@
+#@data/values-schema
+---
+name: ""
+image: ""
+port: 0
+profile: ""
+nodePort: 0
+imagePullPolicy: "Always"
+secret: ""
+config: ""
+dbConfig: ""

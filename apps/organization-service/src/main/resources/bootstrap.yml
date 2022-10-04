@@ -1,0 +1,17 @@
+server.port: 8081
+
+spring:
+  application:
+    name: organization-service
+  profiles:
+    active: dev
+    include: database,eureka,kafka
+  cloud:
+    config:
+      uri: http://config-server:8071
+
+logging:
+  level:
+    com.netflix: WARN
+    org.springframework.web: WARN
+    com.optimagrowth: DEBUG

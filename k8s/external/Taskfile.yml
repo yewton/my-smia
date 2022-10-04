@@ -1,0 +1,64 @@
+version: '3'
+
+tasks:
+  all:
+    deps:
+      - task: database
+      - task: redis
+      - task: elasticsearch
+      - task: logstash
+      - task: kibana
+      - task: zipkin
+      - task: kafka
+  database:
+    - task: apply
+      vars: { NAME: database, EXTNAME: '{{.DB_HOST}}' }
+  redis:
+    - task: apply
+      vars: { NAME: redis, EXTNAME: '{{.REDIS_HOST}}' }
+  elasticsearch:
+    - task: apply
+      vars: { NAME: elasticsearch, EXTNAME: '{{.ES_HOST}}' }
+  logstash:
+    - task: apply
+      vars: { NAME: logstash, EXTNAME: '{{.LOGSTASH_HOST}}' }
+  kibana:
+    - task: apply
+      vars: { NAME: kibana, EXTNAME: '{{.KIBANA_HOST}}' }
+  zipkin:
+    - task: apply
+      vars: { NAME: zipkin, EXTNAME: '{{.ZIPKIN_HOST}}' }
+  kafka:
+    cmds:
+      - task: helm
+        vars:
+          NAME: zookeeper
+          CHART: bitnami/zookeeper
+          OPTS: >-
+            --set replicaCount=1
+            --set auth.enabled=false
+            --set allowAnonymousLogin=true
+      - task: helm
+        vars:
+          NAME: kafka
+          CHART: bitnami/kafka
+          OPTS: >-
+            --set zookeeper.enabled=false
+            --set replicaCount=1
+            --set externalZookeeper.servers=zookeeper
+  helm-destroy:
+    cmds:
+      - helm ls -n {{.NAMESPACE}} --all --short | xargs --no-run-if-empty -L1 helm -n {{.NAMESPACE}} uninstall
+  apply:
+    cmds:
+      - ytt -f config.yml -f schema.yml --data-value name={{.NAME}} --data-value externalName={{.EXTNAME}} | kubectl apply -f -
+  helm-deps:
+    run: once
+    cmds:
+      - helm repo add bitnami https://charts.bitnami.com/bitnami
+  helm:
+    deps:
+      - task: helm-deps
+    cmds:
+      - cmd: >-
+          helm upgrade --wait --install -n {{.NAMESPACE}} {{.NAME}} {{.CHART}} {{.OPTS}}

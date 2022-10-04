@@ -1,0 +1,37 @@
+version: '3'
+
+env:
+  ENV: '{{default "local" .ENV}}'
+  SECRET_FILE:
+    sh: 'realpath config/bootstrap-{{.ENV}}.yml'
+  CONFIG_REPO:
+    sh: 'realpath config-repo/{{.ENV}}'
+
+vars:
+  ENCRYPTED_DB_PASSWORD:
+    sh: spring encrypt '{{.DB_PASSWORD}}' --key '{{.ENCRYPT_KEY}}'
+  ENCRYPTED_JWT_SIGNING_KEY:
+    sh: spring encrypt '{{.JWT_SIGNING_KEY}}' --key '{{.ENCRYPT_KEY}}'
+
+dotenv: [ '.env.{{.ENV}}', '.env.{{.ENV}}.tfgen' ]
+
+includes:
+  k8s:
+    taskfile: ./k8s
+    dir: ./k8s
+  docker:
+    taskfile: ./docker
+    dir: ./docker
+  apps:
+    taskfile: ./apps
+    dir: ./apps
+
+tasks:
+  generate:config-files:
+    desc: 各種設定ファイルを生成します
+    cmds:
+      - 'echo "encrypt.key: \"{{.ENCRYPT_KEY}}\"" > {{.SECRET_FILE}}'
+      - 'mkdir -p {{.CONFIG_REPO}}'
+      - 'echo "signing.key: \"{cipher}{{.ENCRYPTED_JWT_SIGNING_KEY}}\"" > {{.CONFIG_REPO}}/application.yml'
+      - 'echo "spring.datasource.password: \"{cipher}{{.ENCRYPTED_DB_PASSWORD}}\"" > {{.CONFIG_REPO}}/application-database.yml'
+    silent: true # 暗号化鍵を画面出力したくないので

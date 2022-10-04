@@ -1,0 +1,54 @@
+version: '3'
+
+vars:
+  NAMESPACE: my-smia
+
+includes:
+  ext:
+    taskfile: ./external
+    dir: ./external
+  app:
+    taskfile: ./app
+    dir: ./app
+
+tasks:
+  setup:
+    run: once
+    deps:
+      - task: namespace
+  use-context:
+    run: once
+    cmds:
+      - |-
+        {{if eq .ENV "aws"}}
+        aws eks update-kubeconfig --name ostock-dev-cluster --alias ostock-dev-cluster
+        {{else}}
+        kubectl config use-context docker-desktop
+        {{end}}
+  namespace:
+    desc: 名前空間を作成します
+    deps:
+      - task: use-context
+    cmds:
+      - kubectl create namespace {{.NAMESPACE}}
+    status:
+      - kubectl get namespace {{.NAMESPACE}}
+  apps:
+    desc: アプリケーションをデプロイします
+    deps:
+      - task: setup
+    cmds:
+      - task: app:all
+  externals:
+    desc: 外部サービスを設定します
+    deps:
+      - task: setup
+    cmds:
+      - task: ext:all
+  destroy:
+    desc: 全てを無かったことにします
+    deps:
+      - task: setup
+    cmds:
+      - task: ext:helm-destroy
+      - kubectl -n {{.NAMESPACE}} delete all --all

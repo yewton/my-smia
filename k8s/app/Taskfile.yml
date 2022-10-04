@@ -1,0 +1,65 @@
+version: '3'
+
+vars:
+  DESC_SUFFIX: をデプロイします
+  IMAGE_PULL_POLICY: '{{if eq .ENV "local"}}IfNotPresent{{else}}Always{{end}}'
+  CONFIG_SERVER_PROFILE: 'native,{{.ENV}}'
+
+tasks:
+  all:
+    desc: 'すべてのコンポーネント{{.DESC_SUFFIX}}'
+    cmds:
+      - task: config-server
+      - task: eureka-server
+      - task: authentication-service
+      - task: licensing-service
+      - task: organization-service
+      - task: gateway-server
+  config-server:
+    desc: 'Config サーバー{{.DESC_SUFFIX}}'
+    cmds:
+      - task: apply
+        vars:
+          APP: config-server
+          OPTS: >-
+            --data-value profile='{{.CONFIG_SERVER_PROFILE}}'
+            --data-value-file secret='{{.SECRET_FILE}}'
+            --data-value-file config='{{.CONFIG_REPO}}/application.yml'
+            --data-value-file dbConfig='{{.CONFIG_REPO}}/application-database.yml'
+  eureka-server:
+    desc: 'Eureka サーバー{{.DESC_SUFFIX}}'
+    cmds:
+      - task: apply
+        vars: { APP: eureka-server }
+  gateway-server:
+    desc: 'ゲートウェイサーバー{{.DESC_SUFFIX}}'
+    cmds:
+      - task: apply
+        vars: { APP: gateway-server }
+  authentication-service:
+    desc: '認証サービス{{.DESC_SUFFIX}}'
+    cmds:
+      - task: apply
+        vars: { APP: authentication-service }
+  licensing-service:
+    desc: 'ライセンシングサービス{{.DESC_SUFFIX}}'
+    cmds:
+      - task: apply
+        vars: { APP: licensing-service }
+  organization-service:
+    desc: 'オーガニゼーションサービス{{.DESC_SUFFIX}}'
+    cmds:
+      - task: apply
+        vars: { APP: organization-service }
+  apply:
+    cmds:
+      - >-
+        ytt -f config.yml -f schema.yml -f app.lib.yml
+        --data-values-file {{.VALUES_FILE}}
+        --data-value image={{.IMAGE}}
+        --data-value imagePullPolicy={{.IMAGE_PULL_POLICY}}
+        {{- with .OPTS}} {{.}}{{end}}
+        | kubectl apply -f -
+    vars:
+      IMAGE: '{{.REGISTRY_URL}}ostock/{{.APP}}:chapter12'
+      VALUES_FILE: '{{.APP}}-values.yml'

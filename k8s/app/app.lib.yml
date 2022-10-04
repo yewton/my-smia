@@ -1,0 +1,5 @@
+#@ load("@ytt:sha256", "sha256")
+
+#@ def nameSuffix(content):
+#@   return sha256.sum(content)[:10]
+#@ end

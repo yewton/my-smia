@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/apps/authentication-service/authentication-service.iml" filepath="$PROJECT_DIR$/apps/authentication-service/authentication-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/apps/config-server/config-server.iml" filepath="$PROJECT_DIR$/apps/config-server/config-server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/apps/eureka-server/eureka-server.iml" filepath="$PROJECT_DIR$/apps/eureka-server/eureka-server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/apps/gateway-server/gateway-server.iml" filepath="$PROJECT_DIR$/apps/gateway-server/gateway-server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/apps/licensing-service/licensing-service.iml" filepath="$PROJECT_DIR$/apps/licensing-service/licensing-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/my-smia.iml" filepath="$PROJECT_DIR$/.idea/my-smia.iml" />
+      <module fileurl="file://$PROJECT_DIR$/apps/organization-service/organization-service.iml" filepath="$PROJECT_DIR$/apps/organization-service/organization-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/apps/ostock-parent-pom.iml" filepath="$PROJECT_DIR$/apps/ostock-parent-pom.iml" />
+      <module fileurl="file://$PROJECT_DIR$/terraform/terraform.iml" filepath="$PROJECT_DIR$/terraform/terraform.iml" />
+    </modules>
+  </component>
+</project>
