@@ -1,3 +1,3 @@
 *.pem
 .pgpass
-.env.aws.*
+.env.aws

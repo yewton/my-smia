@@ -49,14 +49,23 @@ tasks:
   helm-destroy:
     cmds:
       - helm ls -n {{.NAMESPACE}} --all --short | xargs --no-run-if-empty -L1 helm -n {{.NAMESPACE}} uninstall
+    deps:
+      - task: :setup
   apply:
+    internal: true
     cmds:
       - ytt -f config.yml -f schema.yml --data-value name={{.NAME}} --data-value externalName={{.EXTNAME}} | kubectl apply -f -
+    deps:
+      - task: :setup
   helm-deps:
+    internal: true
     run: once
     cmds:
       - helm repo add bitnami https://charts.bitnami.com/bitnami
+    deps:
+      - task: :setup
   helm:
+    internal: true
     deps:
       - task: helm-deps
     cmds:

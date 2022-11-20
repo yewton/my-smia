@@ -9,3 +9,8 @@ tasks:
     desc: 全てのアプリケーションイメージをビルドします
     cmds:
       - mvn clean package dockerfile:build
+  build-image:
+    desc: 指定されたアプリケーションイメージをビルドします
+    dir: './{{.CLI_ARGS}}'
+    cmds:
+      - mvn clean package dockerfile:build

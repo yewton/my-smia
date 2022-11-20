@@ -1,0 +1,11 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="config-server" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+    <option name="ACTIVE_PROFILES" value="native,local" />
+    <module name="config-server" />
+    <option name="SPRING_BOOT_MAIN_CLASS" value="com.optimagrowth.configserver.ConfigurationServerApplication" />
+    <option name="VM_PARAMETERS" value="-Dapp.config-repo=$ProjectFileDir$/config-repo/local/ -Dspring.cloud.bootstrap.additional-location=file:$ProjectFileDir$/config/local/" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

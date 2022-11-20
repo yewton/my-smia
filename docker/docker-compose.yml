@@ -28,14 +28,13 @@ services:
     ports:
       - 8071:8071
     environment:
-      SPRING_PROFILES_ACTIVE: native,local
+      SPRING_PROFILES_ACTIVE: native
       SERVER_PORT: 8071
-      ENCRYPT_KEY: ${ENCRYPT_KEY}
     networks:
       - backend
     volumes:
-      - ../config/:/config/
-      - ../config-repo/local/:/etc/my-smia/
+      - ../config/local/:/config/
+      - ../config-repo/local/:/config-repo/
   eureka-server:
     image: ostock/eureka-server:chapter12
     container_name: eurekaServer
@@ -61,8 +60,6 @@ services:
       SERVER_PORT: 8072
       LOGGING_LEVEL_ORG_SPRINGFRAMEWORK: DEBUG
     depends_on:
-      database:
-        condition: service_healthy
       config-server:
         condition: service_started
       eureka-server:
@@ -93,7 +90,7 @@ services:
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       KAFKA_CREATE_TOPICS: dresses:1:1,ratings:1:1
     volumes:
-      - "${DOCKER_SOCK}:/var/run/docker.sock"
+      - "${HOME}/.docker/desktop/docker.sock:/var/run/docker.sock"
     depends_on:
       - zookeeper
     networks:

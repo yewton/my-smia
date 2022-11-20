@@ -1,8 +1,5 @@
 version: '3'
 
-env:
-  DOCKER_SOCK: '{{.HOME}}/.docker/desktop/docker.sock'
-
 tasks:
   compose:up:
     desc: アプリケーションを含めた全てのサービスを起動します
@@ -16,7 +13,46 @@ tasks:
     desc: ボリュームも含めて全てを無かったことにします
     cmds:
       - docker compose down -v --remove-orphans
+  ecr:login:
+    desc: ECR にログインします
+    cmds:
+      - aws ecr get-login-password | docker login --username AWS --password-stdin https://{{.REGISTRY_HOST}}
+  ecr:push:all:
+    desc: ECR にローカルのビルド済みイメージを push します(要 aws-vault)
+    cmds:
+      - task: ecr:push:config-server
+      - task: ecr:push:eureka-server
+      - task: ecr:push:authentication-service
+      - task: ecr:push:licensing-service
+      - task: ecr:push:organization-service
+      - task: ecr:push:gateway-server
+  ecr:push:config-server:
+    - task: ecr:push
+      vars: { APP: config-server }
+  ecr:push:eureka-server:
+    - task: ecr:push
+      vars: { APP: eureka-server }
+  ecr:push:authentication-service:
+    - task: ecr:push
+      vars: { APP: authentication-service }
+  ecr:push:licensing-service:
+    - task: ecr:push
+      vars: { APP: licensing-service }
+  ecr:push:organization-service:
+    - task: ecr:push
+      vars: { APP: organization-service }
+  ecr:push:gateway-server:
+    - task: ecr:push
+      vars: { APP: gateway-server }
+  ecr:push:
+    internal: true
+    vars:
+      IMAGE_NAME: 'ostock/{{.APP}}:chapter12'
+      IMAGE_URL: '{{.REGISTRY_HOST}}/{{.IMAGE_NAME}}'
+    cmds:
+      - 'docker tag {{.IMAGE_NAME}} {{.IMAGE_URL}}'
+      - 'docker push {{.IMAGE_URL}}'
   do:
     desc: 任意の docker コマンド( CMD )を実行します
     cmds:
-      - docker {{.CMD}}
+      - 'docker {{.CMD}}'

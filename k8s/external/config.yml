@@ -5,7 +5,6 @@ metadata:
   labels:
     app: #@ data.values.name
   name: #@ data.values.name
-  namespace: my-smia
 spec:
   externalName: #@ data.values.externalName
   selector:

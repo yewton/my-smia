@@ -7,6 +7,7 @@ spring:
   cloud:
     config:
       uri: http://config-server:8071
+      fail-fast: true
 
 logging:
   level:

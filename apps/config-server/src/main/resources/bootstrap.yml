@@ -12,15 +12,7 @@ spring:
       server:
         native:
           search-locations:
-            # ローカルで mvn から実行する時用。
-            # 実行場所によってプロジェクトルートの config-repo の指定方法が変わるので、
-            # 仕方なくいくつか設定しておく…。
-            - file:./../../config-repo/local # config-server のディレクトリで実行した時用
-            - file:./config-repo/local # プロジェクトルートで実行した時用(IDE での実行時など)
-            # コンテナ内で動かす時用
-            - file:/etc/my-smia
-            # /config だとサーバー自体の設定ファイル置き場と被るから駄目
-            # https://docs.spring.io/spring-boot/docs/2.2.4.RELEASE/reference/html/spring-boot-features.html#boot-features-external-config-application-property-files
+            - file:${app.config-repo:./config-repo/}
             - classpath:/config-repo
 
 # Enable all Spring Boot Actuator endpoints.

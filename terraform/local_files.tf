@@ -15,13 +15,17 @@ resource "local_file" "env" {
   ENCRYPT_KEY = ${var.encrypt_key}
   DB_PASSWORD = ${var.db_password}
   JWT_SIGNING_KEY = ${var.jwt_signing_key}
-  REGISTRY_URL = "https://${data.aws_caller_identity.current.account_id}.dkr.ecr.${local.region}.amazonaws.com/"
+  REGISTRY_HOST = "${data.aws_caller_identity.current.account_id}.dkr.ecr.${local.region}.amazonaws.com"
   DB_HOST = "${module.db.db_instance_address}"
   REDIS_HOST = "${aws_elasticache_cluster.redis.cache_nodes[0].address}"
   ES_HOST = "${module.elk2_ec2.private_dns}"
-  LOGSTASH_HOST = ${module.elk2_ec2.private_dns}"
+  LOGSTASH_HOST = "${module.elk2_ec2.private_dns}"
   KIBANA_HOST = "${module.elk2_ec2.private_dns}"
   ZIPKIN_HOST = "${module.elk2_ec2.private_dns}"
+  PGDATABASE = "${local.db_name}"
+  PGHOST = "${module.db.db_instance_address}"
+  PGPORT = "${local.db_port}"
+  PGUSER = "${local.db_user}"
   EOT
   filename        = "${local.root_dir}/.env.aws"
   file_permission = "0600"
