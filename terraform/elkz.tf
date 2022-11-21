@@ -2,7 +2,7 @@ data "aws_ssm_parameter" "al2_latest" {
   name = "/aws/service/ami-amazon-linux-latest/amzn2-ami-kernel-5.10-hvm-x86_64-gp2"
 }
 
-module "elk2_ec2" {
+module "elkz_ec2" {
   source  = "registry.terraform.io/terraform-aws-modules/ec2-instance/aws"
   version = "~> 4.1.4"
 

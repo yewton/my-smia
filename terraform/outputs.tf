@@ -1,5 +1,5 @@
 output "elkz_public_ip" {
-  value = module.elk2_ec2.public_ip
+  value = module.elkz_ec2.public_ip
 }
 
 output "eks_node_public_ip" {
