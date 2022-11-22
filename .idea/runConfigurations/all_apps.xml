@@ -1,0 +1,11 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="all apps" type="CompoundRunConfigurationType">
+    <toRun name="authentication-service" type="SpringBootApplicationConfigurationType" />
+    <toRun name="config-server" type="SpringBootApplicationConfigurationType" />
+    <toRun name="eureka-server" type="SpringBootApplicationConfigurationType" />
+    <toRun name="gateway-server" type="SpringBootApplicationConfigurationType" />
+    <toRun name="license-service" type="SpringBootApplicationConfigurationType" />
+    <toRun name="organicaton-service" type="SpringBootApplicationConfigurationType" />
+    <method v="2" />
+  </configuration>
+</component>
