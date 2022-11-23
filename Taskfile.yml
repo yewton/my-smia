@@ -6,10 +6,6 @@ vars:
     sh: 'realpath .'
   SECRET_FILE: '{{.ROOT}}/config/{{.ENV}}/bootstrap.yml'
   CONFIG_REPO: '{{.ROOT}}/config-repo/{{.ENV}}'
-  ENCRYPTED_DB_PASSWORD:
-    sh: spring encrypt '{{.DB_PASSWORD}}' --key '{{.ENCRYPT_KEY}}'
-  ENCRYPTED_JWT_SIGNING_KEY:
-    sh: spring encrypt '{{.JWT_SIGNING_KEY}}' --key '{{.ENCRYPT_KEY}}'
 
 dotenv: [ '.env.{{.ENV}}' ]
 
@@ -27,6 +23,11 @@ includes:
 tasks:
   generate:config-files:
     desc: 各種設定ファイルを生成します
+    vars:
+      ENCRYPTED_DB_PASSWORD:
+        sh: spring encrypt '{{.DB_PASSWORD}}' --key '{{.ENCRYPT_KEY}}'
+      ENCRYPTED_JWT_SIGNING_KEY:
+        sh: spring encrypt '{{.JWT_SIGNING_KEY}}' --key '{{.ENCRYPT_KEY}}'
     cmds:
       - 'mkdir -p $(dirname {{.SECRET_FILE}})'
       - 'echo "encrypt.key: \"{{.ENCRYPT_KEY}}\"" > {{.SECRET_FILE}}'
