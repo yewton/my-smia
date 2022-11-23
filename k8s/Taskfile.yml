@@ -18,10 +18,12 @@ tasks:
       - task: ext:all
       - task: app:all
   setup:
+    internal: true
     run: once
     deps:
       - task: namespace
   use-context:
+    internal: true
     run: once
     cmds:
       - |-
