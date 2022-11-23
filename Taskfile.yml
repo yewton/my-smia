@@ -34,6 +34,8 @@ tasks:
       - 'mkdir -p {{.CONFIG_REPO}}'
       - 'echo "signing.key: \"{cipher}{{.ENCRYPTED_JWT_SIGNING_KEY}}\"" > {{.CONFIG_REPO}}/application.yml'
       - 'echo "spring.datasource.password: \"{cipher}{{.ENCRYPTED_DB_PASSWORD}}\"" > {{.CONFIG_REPO}}/application-database.yml'
+      - 'echo "generated files:"'
+      - 'ls {{.SECRET_FILE}} {{.CONFIG_REPO}}/'
     silent: true # 暗号化鍵を画面出力したくないので
   db:seed:
     desc: 初期データを投入します
