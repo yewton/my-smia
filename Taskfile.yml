@@ -36,6 +36,11 @@ tasks:
       - 'echo "spring.datasource.password: \"{cipher}{{.ENCRYPTED_DB_PASSWORD}}\"" > {{.CONFIG_REPO}}/application-database.yml'
       - 'echo "generated files:"'
       - 'ls {{.SECRET_FILE}} {{.CONFIG_REPO}}/'
+    sources:
+      - '.env.{{.ENV}}'
+    generates:
+      - '{{.SECRET_FILE}}'
+      - '{{.CONFIG_REPO}}/*.yml'
     silent: true # 暗号化鍵を画面出力したくないので
   db:seed:
     desc: 初期データを投入します
